@@ -1,0 +1,27 @@
+<html>
+    <title></title>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="game.js"></script>
+        <script src="cell.js"></script>
+        <script src="constants.js"></script>
+        <script src="utils.js"></script>
+    </head>
+    <body>
+        <canvas id="Canvas" width="500" height="500" style="border:1px solid #000;">
+        </canvas>
+        <script>
+            var game = new Game();
+            game.draw();
+            var canvas = document.getElementById("Canvas");
+
+            canvas.addEventListener("click", getClickedPosition, false);
+
+            function getClickedPosition(e) {
+                var xPosition = e.clientX - canvas.offsetLeft;
+                var yPosition = e.clientY - canvas.offsetTop;
+                game.getClickPosition(xPosition, yPosition);
+            }
+        </script>
+    </body>
+</html>
