@@ -78,3 +78,29 @@ function makeGrid() {
     return arr;
 }
 
+window.onload = function() {
+    var backImage = new Image();
+    backImage.src = "background.jpg";
+    backImage.onload = function() {
+        var ctx = getContext();
+        ctx.drawImage(backImage, 0, 0, width, width);
+
+        game = new Game();
+        game.draw();
+    }
+
+    for (var i = 1; i <= totalEggs; i++) {
+        var egg = new Image();
+        egg.src = "egg" + i + ".png";
+        eggImages.push(egg);
+    }
+};
+
+var game;
+var eggImages = [];
+
+function getClickedPosition(e) {
+    var xPosition = e.clientX - canvas.offsetLeft;
+    var yPosition = e.clientY - canvas.offsetTop;
+    game.getClickPosition(xPosition, yPosition);
+}

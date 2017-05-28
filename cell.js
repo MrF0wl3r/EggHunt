@@ -15,7 +15,10 @@ Cell.prototype.show = function() {
     let radius = cellWidth/2;
     if (this.revealed) {  
         if (this.egg) {
-            drawEllipse(this.x + radius, this.y + radius, cellWidth - eggOffset, cellWidth - eggOffset);
+            var image = eggImages[0];
+            eggImages.splice(0, 1);
+            ctx.drawImage(image,this.x,this.y, cellWidth, cellWidth);
+            //drawEllipse(this.x + radius, this.y + radius, cellWidth - eggOffset, cellWidth - eggOffset);
         }
         else {
             ctx.fillStyle = "black";
