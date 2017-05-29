@@ -5,31 +5,42 @@ function Game() {
 }
 
 Game.prototype.setup = function() {
-    var options = [];
-    var ctx = getContext();
-    for (var row = 0; row < this.grid.length; row++) {
+    let options = [];
+    let ctx = getContext();
+    let ctxBG = getContextBG();
+    ctx.beginPath();
+    ctx.rect(0, 0, width, width);
+    ctx.fillStyle = 'rgba(35, 35, 35, 0.8)';
+    ctx.fill();
+    for (let row = 0; row < this.grid.length; row++) {
         ctx.moveTo(0, row * cellWidth);
         ctx.lineTo(width, row * cellWidth);
         ctx.stroke();
-        for (var col = 0; col < this.grid.length; col++) {
+        ctxBG.moveTo(0, row * cellWidth);
+        ctxBG.lineTo(width, row * cellWidth);
+        ctxBG.stroke();
+        for (let col = 0; col < this.grid.length; col++) {
             options.push([row, col]);
             ctx.moveTo(row * cellWidth, 0);
             ctx.lineTo(row * cellWidth, width);
             ctx.stroke();
+            ctxBG.moveTo(row * cellWidth, 0);
+            ctxBG.lineTo(row * cellWidth, width);
+            ctxBG.stroke();
         }
     }
 
-    for (var i = 0; i < totalEggs; i++) {
-        var index = Math.floor(Math.random() * options.length);
-        var choice = options[index];
-        var row = choice[0];
-        var col = choice[1];
+    for (let i = 0; i < totalEggs; i++) {
+        let index = Math.floor(Math.random() * options.length);
+        let choice = options[index];
+        let row = choice[0];
+        let col = choice[1];
         options.splice(index, 1);
         this.grid[row][col].egg = true;
     }
 
-    for (var row = 0; row < this.grid.length; row++) {
-        for (var col = 0; col < this.grid.length; col++) {
+    for (let row = 0; row < this.grid.length; row++) {
+        for (let col = 0; col < this.grid.length; col++) {
             this.grid[row][col].countNeighbours(this.grid);
         }
         
@@ -84,6 +95,9 @@ window.onload = function() {
     backImage.onload = function() {
         var ctx = getContext();
         ctx.drawImage(backImage, 0, 0, width, width);
+
+        var ctxBG = getContextBG();
+        ctxBG.drawImage(backImage, 0, 0, width, width);
 
         game = new Game();
         game.draw();

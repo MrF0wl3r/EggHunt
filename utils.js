@@ -4,6 +4,12 @@ function getContext() {
     return ctx;
 }
 
+function getContextBG() {
+    var c = document.getElementById("CanvasBG");
+    var ctx = c.getContext("2d");
+    return ctx;
+}
+
 function drawEllipse(centerX, centerY, width, height) {
     var ctx = getContext();
     ctx.beginPath();

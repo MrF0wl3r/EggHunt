@@ -11,14 +11,17 @@ function Cell(rowIndex, colIndex) {
 }
 
 Cell.prototype.show = function() {
-    ctx = getContext();
+    let ctx = getContext();
     let radius = cellWidth/2;
     if (this.revealed) {  
+        let canvasBG = document.getElementById("CanvasBG");
+        ctx.drawImage(canvasBG, this.x, this.y, cellWidth, cellWidth, this.x, this.y, cellWidth, cellWidth);
         if (this.egg) {
             var image = eggImages[0];
             eggImages.splice(0, 1);
-            ctx.drawImage(image,this.x,this.y, cellWidth, cellWidth);
-            //drawEllipse(this.x + radius, this.y + radius, cellWidth - eggOffset, cellWidth - eggOffset);
+            let size = Math.floor(cellWidth * 0.75);
+            let offset = Math.floor(cellWidth * 0.125);
+            ctx.drawImage(image,this.x + offset,this.y + offset, size, size);
         }
         else {
             ctx.fillStyle = "black";
@@ -26,12 +29,6 @@ Cell.prototype.show = function() {
                 ctx.font = "24px Arial";
                 ctx.textAlign = "center";
                 ctx.fillText(this.neighborCount, this.x + radius, this.y + radius + 6);
-            }
-            else {
-                ctx.beginPath();
-                ctx.rect(this.x, this.y, cellWidth, cellWidth);
-                ctx.fillStyle = "red";
-                ctx.fill();
             }
         }
     }
