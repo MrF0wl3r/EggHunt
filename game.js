@@ -2,6 +2,7 @@ function Game() {
     this.grid = makeGrid();
     this.setup();
     this.eggCount = 0;
+    this.finished = false;
 }
 
 Game.prototype.setup = function() {
@@ -57,19 +58,28 @@ Game.prototype.draw = function() {
 }
 
 Game.prototype.getClickPosition = function(xPosition, yPosition) {
-    console.log(xPosition + ", " + yPosition);
-    for (var row = 0; row < this.grid.length; row++) {
-        for (var col = 0; col < this.grid.length; col++) {
-            if (!this.grid[row][col].revealed) {
-                if (this.grid[row][col].clickInBounds(xPosition, yPosition)) {
-                    this.grid[row][col].reveal(this.grid);
-                    if (this.grid[row][col].egg) {
-                        this.eggCount++;
-                        if (this.eggCount == totalEggs) {
-                            console.log("You've found all the eggs!");
+    if (!this.finished) {
+        for (var row = 0; row < this.grid.length; row++) {
+            for (var col = 0; col < this.grid.length; col++) {
+                if (!this.grid[row][col].revealed) {
+                    if (this.grid[row][col].clickInBounds(xPosition, yPosition)) {
+                        this.grid[row][col].reveal(this.grid);
+                        if (this.grid[row][col].egg) {
+                            this.eggCount++;
+                            if (this.eggCount == totalEggs) {
+                                this.finished = true;
+                                let ctx = getContext();
+                                ctx.rect(0, 0, width, width);
+                                ctx.fillStyle = 'black';
+                                ctx.fill();
+                                ctx.font = "72px Arial";
+                                ctx.textAlign = "center";
+                                ctx.fillStyle = 'red';
+                                ctx.fillText("You've won!", width/2, width/2);
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
             }
         }
@@ -117,4 +127,8 @@ function getClickedPosition(e) {
     var xPosition = e.clientX - canvas.offsetLeft;
     var yPosition = e.clientY - canvas.offsetTop;
     game.getClickPosition(xPosition, yPosition);
+}
+
+function restartGame() {
+    window.location.reload(false);
 }
