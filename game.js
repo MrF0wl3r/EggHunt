@@ -3,6 +3,7 @@ function Game() {
     this.setup();
     this.eggCount = 0;
     this.finished = false;
+    this.moves = 0;
 }
 
 Game.prototype.setup = function() {
@@ -44,12 +45,10 @@ Game.prototype.setup = function() {
         for (let col = 0; col < this.grid.length; col++) {
             this.grid[row][col].countNeighbours(this.grid);
         }
-        
     }
 }
 
 Game.prototype.draw = function() {
-    console.log('drawing.');
     for (var row = 0; row < this.grid.length; row++) {
         for (var col = 0; col < this.grid.length; col++) {
             this.grid[row][col].show();
@@ -64,6 +63,9 @@ Game.prototype.getClickPosition = function(xPosition, yPosition) {
                 if (!this.grid[row][col].revealed) {
                     if (this.grid[row][col].clickInBounds(xPosition, yPosition)) {
                         this.grid[row][col].reveal(this.grid);
+                        this.moves++;
+                        let movesEle = document.getElementById("Moves");
+                        movesEle.innerText = this.moves;
                         if (this.grid[row][col].egg) {
                             this.eggCount++;
                             if (this.eggCount == totalEggs) {
